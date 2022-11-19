@@ -16,20 +16,28 @@ public class Block : MonoBehaviour
     public TMP_Text Blocks;
     private float time = 0f;
     public GAME Game;
+    private new Renderer renderer;
     
 
     public void Start()
     {
         blockCount = random.Next(MinBlock, MaxBlock);
+        renderer = GetComponent<Renderer>();
     }
     private void Update()
     {
-        Blocks.text=blockCount.ToString();
+        Blocks.text = blockCount.ToString();
+        renderer.material.SetFloat("_Gradient", blockCount * 0.01f);
     }
     private void OnCollisionStay(Collision collision)
     {
+        if (collision.gameObject.tag != "Head")
+        {
+            return;
+        }
+
         time -= Time.deltaTime;
-        
+      
         if (time <= 0)
         {
             if (blockCount > 1 && SnakeTail.Life > 1)
@@ -46,16 +54,16 @@ public class Block : MonoBehaviour
             }
             if (blockCount >= 1 && SnakeTail.Life <= 1)
             {
-                Game.GameOver();
                 blockCount--;
+                SnakeTail.Life = 0;
+                Game.GameOver();                
                 //Destroy(gameObject);
             }
             else if (blockCount == 0)
-            {
-                               
+            {                  
                 Destroy(gameObject);
             }
-            time = 0.1f;
+            time = 0.15f;
         }            
         
     }

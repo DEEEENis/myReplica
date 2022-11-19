@@ -12,8 +12,9 @@ public class Eat : MonoBehaviour
     public int MinFood;
     public int MaxFood;
     public TMP_Text Avocado;
+    public GAME GAME;
 
-    //public Vector3 Rotation;
+    public Vector3 Rotation;
     public void Start()
     {
         foodCount = random.Next(MinFood,MaxFood);
@@ -22,15 +23,23 @@ public class Eat : MonoBehaviour
 
     private void Update()
     {
-        //Quaternion deltaRotation = Quaternion.Euler(Rotation * Time.deltaTime);
-        //transform.rotation = deltaRotation * transform.rotation;
+        Quaternion deltaRotation = Quaternion.Euler(Rotation * Time.deltaTime);
+        transform.rotation = deltaRotation * transform.rotation;
     }
     private void OnTriggerEnter(Collider other)
     {        
+        if (other.gameObject.tag != "Head")
+        {
+            return;
+        }
+
+        
+
+
         for (int i = 0; i < foodCount; i++)
         {
             SnakeTail.AddCircle();
-            Destroy(gameObject);
+            Destroy(transform.parent.gameObject);
         }        
     }
     
