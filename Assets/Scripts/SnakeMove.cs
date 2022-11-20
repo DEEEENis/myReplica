@@ -23,8 +23,10 @@ public class SnakeMove : MonoBehaviour
     //    float inputX = Input.GetAxis("Horizontal");
     //    Rigidbody.velocity = new Vector3(SideSpeed.x * inputX, 0, 0);
     //}
+   
     public float ForwardSpeed = 5;
     public float Sensitivity = 10;
+    
 
     private new Rigidbody rigidbody;
 
