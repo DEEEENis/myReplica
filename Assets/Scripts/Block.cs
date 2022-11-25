@@ -11,13 +11,21 @@ public class Block : MonoBehaviour
     public SnakeTail SnakeTail;
     Random random = new Random();
     private int blockCount;
-    public int MinBlock;
-    public int MaxBlock;
+    private int MinBlock=1;
+    private int MaxBlock=100;
     public TMP_Text Blocks;
     private float time = 0f;
     public GAME Game;
     private new Renderer renderer;
-    
+    private AudioSource audioSource;
+
+    public GameObject AnimeBlock;
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
 
     public void Start()
     {
@@ -38,7 +46,7 @@ public class Block : MonoBehaviour
 
         time -= Time.deltaTime;
       
-        if (time <= 0)
+        if (time <= 0 && !Game.die)
         {
             if (blockCount > 1 && SnakeTail.Life > 1)
             {
@@ -50,7 +58,9 @@ public class Block : MonoBehaviour
             {
                 SnakeTail.RemoveCircle();
                 blockCount--;
+                Instantiate(AnimeBlock, transform.position, transform.rotation);
                 Destroy(gameObject);
+                Game.CrashBlock();
             }
             if (blockCount >= 1 && SnakeTail.Life <= 1)
             {
@@ -60,10 +70,12 @@ public class Block : MonoBehaviour
                 //Destroy(gameObject);
             }
             else if (blockCount == 0)
-            {                  
+            {
+                Instantiate(AnimeBlock, transform.position, transform.rotation);
                 Destroy(gameObject);
+                Game.CrashBlock();
             }
-            time = 0.15f;
+            time = 0.12f;
         }            
         
     }

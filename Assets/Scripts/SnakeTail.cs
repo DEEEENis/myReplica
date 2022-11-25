@@ -12,11 +12,13 @@ public class SnakeTail : MonoBehaviour
     private List<Vector3> positions = new List<Vector3>();
     public TMP_Text LifeText;
     private Vector3 offset;
+    private AudioSource audioSource;
 
     private void Awake()
     {
         positions.Add(SnakeHead.position);
         offset = SnakeHead.transform.position - LifeText.rectTransform.position;
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -45,7 +47,9 @@ public class SnakeTail : MonoBehaviour
     public void AddCircle()
     {
         Transform circle = Instantiate(SnakeHead, positions[positions.Count - 1], Quaternion.identity, transform);
-        circle.tag = "Tail";        
+        circle.tag = "Tail";
+        SphereCollider sphereCollider = circle.GetComponent<SphereCollider>();
+        Destroy(sphereCollider);
         snakeCircles.Add(circle);
         positions.Add(circle.position);
         Life++;
@@ -57,5 +61,6 @@ public class SnakeTail : MonoBehaviour
         snakeCircles.RemoveAt(snakeCircles.Count - 1);
         positions.RemoveAt(positions.Count - 1);
         Life--;
+        audioSource.Play();
     }
 }

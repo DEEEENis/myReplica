@@ -33,14 +33,11 @@ public class Eat : MonoBehaviour
             return;
         }
 
-        
-
-
         for (int i = 0; i < foodCount; i++)
         {
             SnakeTail.AddCircle();
-            Destroy(transform.parent.gameObject);
-        }        
+        }
+        Destroy(transform.parent.gameObject);
     }
     
 }
