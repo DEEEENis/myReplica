@@ -45,38 +45,33 @@ public class Block : MonoBehaviour
         }
 
         time -= Time.deltaTime;
-      
-        if (time <= 0 && !Game.die)
+
+        if (time <= 0)
         {
             if (blockCount > 1 && SnakeTail.Life > 1)
             {
+                blockCount--;
                 SnakeTail.RemoveCircle();
-                blockCount--;
-                //Destroy(gameObject);
             }
-            if (blockCount <= 1 && SnakeTail.Life > 1)
+            else
             {
-                SnakeTail.RemoveCircle();
-                blockCount--;
-                Instantiate(AnimeBlock, transform.position, transform.rotation);
-                Destroy(gameObject);
-                Game.CrashBlock();
-            }
-            if (blockCount >= 1 && SnakeTail.Life <= 1)
-            {
-                blockCount--;
-                SnakeTail.Life = 0;
-                Game.GameOver();                
-                //Destroy(gameObject);
-            }
-            else if (blockCount == 0)
-            {
-                Instantiate(AnimeBlock, transform.position, transform.rotation);
-                Destroy(gameObject);
-                Game.CrashBlock();
+                if (SnakeTail.Life > 1)
+                {
+                    SnakeTail.RemoveCircle();
+                    Destroy(gameObject);
+                    GameObject animeBlock = Instantiate(AnimeBlock, transform.position, transform.rotation);
+                    Destroy(animeBlock, 1f);
+                    Game.CrashBlock();
+                }
+                else
+                {
+                    blockCount--;
+                    collision.gameObject.tag = "Tail";
+                    Game.GameOver();
+                }
             }
             time = 0.12f;
-        }            
-        
+        }
+
     }
 }
